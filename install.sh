@@ -47,8 +47,8 @@ install_config() {
 
     # TODO: move extra config files like zsh/autosuggestion-settings.zsh to where the belong
 
-    if ! grep -q "source ~/.zshrc_stow" "$HOME/.zshrc"; then
-        echo "source ~/.zshrc_stow" >> "$HOME/.zshrc"
+    if ! grep -q "source ~/.zshrc_share" "$HOME/.zshrc"; then
+        echo "source ~/.zshrc_share" >> "$HOME/.zshrc"
     fi
 
     # Handle git config
