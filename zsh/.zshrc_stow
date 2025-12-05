@@ -20,7 +20,6 @@ path=(
 # Plugins (zplug)
 # =============================================================================
 source $ZPLUG_HOME/init.zsh
-zplug "plugins/git", from:oh-my-zsh
 zplug "plugins/history", from:oh-my-zsh
 # zplug "mafredri/zsh-async", use:async.zsh, from:github, defer:0
 # zplug "zsh-users/zsh-completions"
@@ -55,3 +54,25 @@ source <(fzf --zsh)
 
 # Directory listing
 alias ls="ls --color=always"
+
+# git
+alias gs="git status"
+alias gd="git diff"
+
+# =============================================================================
+# Prompt Customization
+# =============================================================================
+autoload -U colors && colors
+setopt PROMPT_SUBST
+
+# Git prompt customization (relies on the oh-my-zsh git plugin you already load)
+ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg[blue]%}git:(%{$fg[red]%}"
+ZSH_THEME_GIT_PROMPT_SUFFIX="%{$fg[blue]%})%{$reset_color%} "
+ZSH_THEME_GIT_PROMPT_DIRTY="*"
+ZSH_THEME_GIT_PROMPT_CLEAN=""
+
+# Prompt Definition
+# %D{%H:%M:%S}  -> Time
+# %~            -> Current directory (relative to home)
+# %(?.√.x)      -> Last exit code (Check or X)
+PROMPT='%{$fg[gray]%}[%D{%H:%M:%S}] %{$fg[cyan]%}%~%{$reset_color%} $(git_prompt_info)%(?.%{$fg[green]%}➜.%{$fg[red]%}➜) %{$reset_color%}'
