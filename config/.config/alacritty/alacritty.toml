@@ -1,0 +1,20 @@
+[general]
+import = [
+    "~/.config/alacritty/theme/catppuccin-macchiato.toml"
+]
+live_config_reload = true
+
+[env]
+TERM = "xterm-256color"
+
+[window]
+decorations = "None"
+blur = true
+opacity = 0.66
+
+[font]
+#normal.family = "Hack Nerd Font"
+#normal.style = "Regular"
+size = 14
+
+

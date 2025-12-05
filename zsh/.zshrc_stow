@@ -1,0 +1,57 @@
+# =============================================================================
+# Environment Variables
+# =============================================================================
+export ZPLUG_HOME=$HOMEBREW_PREFIX/opt/zplug
+export FZF_DEFAULT_COMMAND="fd --type file --hidden --exclude .git"
+
+
+# =============================================================================
+# Path Configuration
+# =============================================================================
+typeset -U path
+path=(
+    $HOME/bin
+    /usr/local/bin
+    /usr/local/opt/openjdk/bin
+    $path
+)
+
+# =============================================================================
+# Plugins (zplug)
+# =============================================================================
+source $ZPLUG_HOME/init.zsh
+zplug "plugins/git", from:oh-my-zsh
+zplug "plugins/history", from:oh-my-zsh
+# zplug "mafredri/zsh-async", use:async.zsh, from:github, defer:0
+# zplug "zsh-users/zsh-completions"
+# zplug "zsh-users/zsh-autosuggestions"
+# zplug "zsh-users/zsh-syntax-highlighting", defer:2
+# zplug "zsh-users/zsh-history-substring-search", defer:3
+# zplug "sindresorhus/pure", use:pure.zsh, from:github, as:theme
+# zplug "sharkdp/fd", from:gh-r, as:command, rename-to:fd, use:"*darwin*"
+zplug load
+
+# Install plugins if there are plugins that have not been installed
+if ! zplug check --verbose; then
+    printf "Install? [y/N]: "
+    if read -q; then
+        echo; zplug install
+    fi
+fi
+
+# =============================================================================
+# Tool Initializations
+# =============================================================================
+
+# brew
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+# fzf
+source <(fzf --zsh)
+
+# =============================================================================
+# Aliases
+# =============================================================================
+
+# Directory listing
+alias ls="ls --color=always"
