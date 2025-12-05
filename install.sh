@@ -40,7 +40,7 @@ install_config() {
     DOTFILES_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
     # TODO: probably move everything that belongs in $HOME into 'home' and just stow the entire folder
-    configs=(config zsh tmux)
+    configs=(config zsh tmux git)
     for cfg in ${configs[@]}; do
         stow -t "$HOME" -d "$DOTFILES_DIR" "$cfg"
     done
@@ -50,6 +50,18 @@ install_config() {
     if ! grep -q "source ~/.zshrc_stow" "$HOME/.zshrc"; then
         echo "source ~/.zshrc_stow" >> "$HOME/.zshrc"
     fi
+
+    # Handle git config
+    if [ ! -f "$HOME/.gitconfig" ]; then
+        touch "$HOME/.gitconfig"
+    fi
+
+    if ! grep -q "path = ~/.gitconfig_include" "$HOME/.gitconfig"; then
+        echo "[include]" >> "$HOME/.gitconfig"
+        echo "    path = ~/.gitconfig_include" >> "$HOME/.gitconfig"
+    fi
+
+
 
     echo "done."
 }
