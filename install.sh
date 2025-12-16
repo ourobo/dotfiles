@@ -26,7 +26,7 @@ install_brew() {
 install_brew_packages() {
     echo "installing homebrew packages..."
     formulae=(tmux zsh stow nvm uv fzf zplug)
-    casks=(alacritty raycast rectangle font-hack-nerd-font visual-studio-code obsidian)
+    casks=(alacritty rectangle font-hack-nerd-font visual-studio-code obsidian)
 
     brew install ${formulae[@]}
     brew install --cask ${casks[@]}
