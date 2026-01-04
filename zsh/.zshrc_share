@@ -8,6 +8,12 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 # fzf
 source <(fzf --zsh)
 
+# =============================================================================
+# Zsh Config
+# =============================================================================
+
+# vim mode
+bindkey -v
 
 # =============================================================================
 # Environment Variables
@@ -57,3 +63,5 @@ alias ls="ls --color=always"
 # git
 alias gs="git status"
 alias gd="git diff"
+
+
