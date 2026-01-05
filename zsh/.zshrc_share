@@ -65,3 +65,9 @@ alias gs="git status"
 alias gd="git diff"
 
 
+# =============================================================================
+# Key Bindings
+# =============================================================================
+
+# Autosuggestions: Accept with Ctrl-f in Vi Insert Mode
+bindkey -M viins '^f' autosuggest-accept

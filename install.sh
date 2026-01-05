@@ -25,7 +25,7 @@ install_brew() {
 
 install_brew_packages() {
     echo "installing homebrew packages..."
-    formulae=(tmux zsh stow nvm uv fzf zplug node)
+    formulae=(tmux zsh stow nvm uv fzf zplug node neovim)
     casks=(alacritty rectangle font-hack-nerd-font visual-studio-code obsidian)
 
     brew install ${formulae[@]}
@@ -66,14 +66,44 @@ install_config() {
     echo "done."
 }
 
-install() {
-    echo "install start..."
-    check_dependencies
-    install_brew
-    install_brew_packages
-    install_config
-    echo "install done."
-    exit 0
+usage() {
+    echo "Usage: $0 {all|configs|brew}"
+    echo "  all        : Install Homebrew, packages, and dotfiles"
+    echo "  configs    : Install only dotfiles (requires stow)"
+    echo "  brew       : Install only Homebrew and packages"
+    exit 1
 }
 
-install
+if [ $# -eq 0 ]; then
+    usage
+fi
+
+case "$1" in
+    all)
+        echo "installing everything..."
+        check_dependencies
+        install_brew
+        install_brew_packages
+        install_config
+        echo "install done."
+        ;;
+    configs)
+        echo "installing configs only..."
+        if ! command -v stow >/dev/null 2>&1; then
+            echo "Error: 'stow' is required for config installation but not found."
+            exit 1
+        fi
+        install_config
+        echo "configs install done."
+        ;;
+    brew)
+        echo "installing homebrew only..."
+        check_dependencies
+        install_brew
+        install_brew_packages
+        echo "homebrew install done."
+        ;;
+    *)
+        usage
+        ;;
+esac
