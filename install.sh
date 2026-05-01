@@ -25,43 +25,38 @@ install_brew() {
 
 install_brew_packages() {
     echo "installing homebrew packages..."
-    formulae=(tmux zsh stow nvm uv fzf zplug node neovim)
-    casks=(alacritty rectangle font-hack-nerd-font visual-studio-code obsidian)
+    formulae=(zsh stow nvm uv fzf zplug node koekeishiya/formulae/yabai)
+    casks=(ghostty rectangle font-hack-nerd-font visual-studio-code obsidian)
 
     brew install ${formulae[@]}
     brew install --cask ${casks[@]}
     echo "done."
 }
 
+ensure_line() {
+    local file="$1" line="$2"
+    grep -qF "$line" "$file" 2>/dev/null || echo "$line" >> "$file"
+}
+
+ensure_block() {
+    local file="$1" marker="$2" block="$3"
+    grep -qF "$marker" "$file" 2>/dev/null || printf '%s\n' "$block" >> "$file"
+}
 
 install_config() {
     echo "installing config files..."
-
     DOTFILES_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-    # TODO: probably move everything that belongs in $HOME into 'home' and just stow the entire folder
-    configs=(config zsh tmux git)
-    for cfg in ${configs[@]}; do
-        stow -t "$HOME" -d "$DOTFILES_DIR" "$cfg"
-    done
+    stow -t "$HOME" -d "$DOTFILES_DIR" home
 
-    # TODO: move extra config files like zsh/autosuggestion-settings.zsh to where the belong
+    # ~/.zshrc and ~/.gitconfig stay machine-local so tool installers
+    # (Antigravity, LM Studio, `git config --global`, etc.) can append to them.
+    # We only ensure the entry points pull in the managed files.
+    ensure_line "$HOME/.zshrc" "source ~/.zshrc_share"
 
-    if ! grep -q "source ~/.zshrc_share" "$HOME/.zshrc"; then
-        echo "source ~/.zshrc_share" >> "$HOME/.zshrc"
-    fi
-
-    # Handle git config
-    if [ ! -f "$HOME/.gitconfig" ]; then
-        touch "$HOME/.gitconfig"
-    fi
-
-    if ! grep -q "path = ~/.gitconfig_include" "$HOME/.gitconfig"; then
-        echo "[include]" >> "$HOME/.gitconfig"
-        echo "    path = ~/.gitconfig_include" >> "$HOME/.gitconfig"
-    fi
-
-
+    [ -f "$HOME/.gitconfig" ] || touch "$HOME/.gitconfig"
+    ensure_block "$HOME/.gitconfig" "path = ~/.gitconfig_include" \
+        $'[include]\n    path = ~/.gitconfig_include'
 
     echo "done."
 }

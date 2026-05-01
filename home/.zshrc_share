@@ -15,6 +15,16 @@ source <(fzf --zsh)
 # vim mode
 bindkey -v
 
+# Share command history across concurrent sessions: every command is appended
+# to ~/.zsh_history immediately and live sessions import new entries on each
+# prompt, so fzf's Ctrl-R sees everything typed in any open shell.
+setopt SHARE_HISTORY
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_REDUCE_BLANKS
+HISTSIZE=100000
+SAVEHIST=100000
+
 # =============================================================================
 # Environment Variables
 # =============================================================================
@@ -40,7 +50,6 @@ zplug "mafredri/zsh-async", use:async.zsh, from:github, defer:0
 zplug "zsh-users/zsh-completions"
 zplug "zsh-users/zsh-autosuggestions"
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
-zplug "plugins/z", from:oh-my-zsh
 zplug "sindresorhus/pure", use:pure.zsh, from:github, as:theme
 zplug load
 

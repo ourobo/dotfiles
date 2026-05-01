@@ -1,0 +1,28 @@
+# Set layout to bsp (Binary Space Partitioning)
+yabai -m config layout bsp
+
+# Gaps between windows and screen edges
+yabai -m config top_padding    5
+yabai -m config bottom_padding 5
+yabai -m config left_padding   5
+yabai -m config right_padding  5
+yabai -m config window_gap     5
+
+# Focus follows mouse (optional but popular)
+yabai -m config focus_follows_mouse autoraise
+
+# Float specific apps
+yabai -m rule --add app="^System Settings$" manage=off
+yabai -m rule --add app="^Calculator$" manage=off
+yabai -m rule --add app="^Archive Utility$" manage=off
+
+# Flash the window when focus changes
+yabai -m config window_animation_duration 0.2
+
+# Enable window opacity
+yabai -m config window_opacity on
+
+# Set the opacity for the focused and unfocused windows
+# 1.0 is fully opaque, 0.0 is transparent
+yabai -m config active_window_opacity   1.0
+yabai -m config normal_window_opacity   0.85
